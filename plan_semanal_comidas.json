@@ -1,0 +1,446 @@
+{
+  "tipo": "plan_semanal_compartido",
+  "unidad_peso": "gramos en crudo",
+  "personas": {
+    "persona_1": {
+      "objetivo": "perdida de grasa y recomposicion corporal",
+      "calorias_iniciales_aprox": "1550-1650 kcal/dia",
+      "proteina_aprox": "120-130 g/dia"
+    },
+    "persona_2": {
+      "objetivo": "ganancia de masa muscular",
+      "calorias_iniciales_aprox": "2300-2450 kcal/dia",
+      "proteina_aprox": "115-125 g/dia"
+    }
+  },
+  "horarios": {
+    "desayuno": "10:30",
+    "comida": "14:00",
+    "merienda": "18:00",
+    "cena": "22:00"
+  },
+  "entrenamiento_asumido": {
+    "dias": [
+      "lunes",
+      "miercoles",
+      "jueves"
+    ],
+    "persona_1": "2 dias halterofilia + 1 dia CrossFit, 1 hora por sesion",
+    "persona_2": "3 dias CrossFit, 1 hora por sesion"
+  },
+  "plan": {
+    "lunes": {
+      "tipo": "entrenamiento",
+      "desayuno": {
+        "plato": "Tostadas + huevos + fruta",
+        "persona_1": {
+          "pan_integral_g": 60,
+          "huevos": 2,
+          "tomate_g": 100,
+          "platano_g": 80
+        },
+        "persona_2": {
+          "pan_integral_g": 100,
+          "huevos": 3,
+          "tomate_g": 150,
+          "platano_g": 120
+        }
+      },
+      "comida": {
+        "plato": "Pasta bolognesa",
+        "persona_1": {
+          "pasta_g": 70,
+          "ternera_magra_g": 130,
+          "tomate_triturado_g": 150,
+          "calabacin_zanahoria_g": 150,
+          "aceite_oliva_g": 5,
+          "parmesano_g": 10
+        },
+        "persona_2": {
+          "pasta_g": 110,
+          "ternera_magra_g": 170,
+          "tomate_triturado_g": 200,
+          "calabacin_zanahoria_g": 200,
+          "aceite_oliva_g": 10,
+          "parmesano_g": 15
+        }
+      },
+      "merienda": {
+        "plato": "Yogur + avena + platano",
+        "persona_1": {
+          "yogur_alto_en_proteina_g": 150,
+          "avena_g": 20,
+          "platano_g": 80,
+          "miel_g": 5
+        },
+        "persona_2": {
+          "yogur_alto_en_proteina_g": 200,
+          "avena_g": 40,
+          "platano_g": 120,
+          "miel_g": 10
+        }
+      },
+      "cena": {
+        "plato": "Pollo + patata + verduras",
+        "persona_1": {
+          "pollo_g": 150,
+          "patata_g": 250,
+          "verduras_g": 200,
+          "aceite_oliva_g": 5
+        },
+        "persona_2": {
+          "pollo_g": 200,
+          "patata_g": 400,
+          "verduras_g": 250,
+          "aceite_oliva_g": 10
+        }
+      }
+    },
+    "martes": {
+      "tipo": "descanso",
+      "desayuno": {
+        "plato": "Yogur con avena y frutos rojos",
+        "persona_1": {
+          "yogur_g": 200,
+          "avena_g": 35,
+          "frutos_rojos_g": 100,
+          "nueces_g": 10
+        },
+        "persona_2": {
+          "yogur_g": 250,
+          "avena_g": 60,
+          "frutos_rojos_g": 150,
+          "nueces_g": 20
+        }
+      },
+      "comida": {
+        "plato": "Arroz con pollo y verduras",
+        "persona_1": {
+          "arroz_g": 60,
+          "pollo_g": 150,
+          "verduras_g": 250,
+          "aceite_oliva_g": 5
+        },
+        "persona_2": {
+          "arroz_g": 100,
+          "pollo_g": 200,
+          "verduras_g": 300,
+          "aceite_oliva_g": 10
+        }
+      },
+      "merienda": {
+        "plato": "Tostada con queso fresco y fruta",
+        "persona_1": {
+          "pan_integral_g": 50,
+          "queso_fresco_g": 80,
+          "manzana_g": 150
+        },
+        "persona_2": {
+          "pan_integral_g": 90,
+          "queso_fresco_g": 120,
+          "manzana_g": 200
+        }
+      },
+      "cena": {
+        "plato": "Salmon + patata + ensalada",
+        "persona_1": {
+          "salmon_g": 140,
+          "patata_g": 200,
+          "ensalada_g": 200,
+          "aceite_oliva_g": 5
+        },
+        "persona_2": {
+          "salmon_g": 180,
+          "patata_g": 300,
+          "ensalada_g": 250,
+          "aceite_oliva_g": 10
+        }
+      }
+    },
+    "miercoles": {
+      "tipo": "entrenamiento",
+      "desayuno": {
+        "plato": "Tostadas de aguacate + huevos",
+        "persona_1": {
+          "pan_integral_g": 60,
+          "huevos": 2,
+          "aguacate_g": 40,
+          "tomate_g": 100,
+          "kiwi": 1
+        },
+        "persona_2": {
+          "pan_integral_g": 100,
+          "huevos": 3,
+          "aguacate_g": 70,
+          "tomate_g": 150,
+          "kiwi": 2
+        }
+      },
+      "comida": {
+        "plato": "Pasta con pollo, tomate y mozzarella",
+        "persona_1": {
+          "pasta_g": 70,
+          "pollo_g": 130,
+          "tomate_triturado_g": 150,
+          "calabacin_g": 150,
+          "mozzarella_g": 40,
+          "aceite_oliva_g": 5
+        },
+        "persona_2": {
+          "pasta_g": 110,
+          "pollo_g": 180,
+          "tomate_triturado_g": 200,
+          "calabacin_g": 200,
+          "mozzarella_g": 60,
+          "aceite_oliva_g": 10
+        }
+      },
+      "merienda": {
+        "plato": "Yogur + platano + cereales",
+        "persona_1": {
+          "yogur_alto_en_proteina_g": 150,
+          "platano_g": 100,
+          "cereales_g": 20
+        },
+        "persona_2": {
+          "yogur_alto_en_proteina_g": 200,
+          "platano_g": 150,
+          "cereales_g": 40
+        }
+      },
+      "cena": {
+        "plato": "Tacos de ternera",
+        "persona_1": {
+          "tortillas_pequenas": 2,
+          "ternera_magra_g": 140,
+          "pimiento_g": 100,
+          "tomate_g": 100,
+          "aguacate_g": 30,
+          "queso_g": 15
+        },
+        "persona_2": {
+          "tortillas": "3-4 pequenas",
+          "ternera_magra_g": 200,
+          "pimiento_g": 150,
+          "tomate_g": 150,
+          "aguacate_g": 60,
+          "queso_g": 25
+        }
+      }
+    },
+    "jueves": {
+      "tipo": "entrenamiento",
+      "desayuno": {
+        "plato": "Tostadas + queso fresco + pavo",
+        "persona_1": {
+          "pan_integral_g": 60,
+          "pavo_g": 80,
+          "queso_fresco_g": 50,
+          "tomate_g": 100,
+          "fruta_g": 150
+        },
+        "persona_2": {
+          "pan_integral_g": 100,
+          "pavo_g": 120,
+          "queso_fresco_g": 80,
+          "tomate_g": 150,
+          "fruta_g": 200
+        }
+      },
+      "comida": {
+        "plato": "Pasta con ternera y pesto",
+        "persona_1": {
+          "pasta_g": 70,
+          "ternera_magra_g": 130,
+          "pesto_g": 10,
+          "tomate_cherry_g": 150,
+          "calabacin_g": 100,
+          "parmesano_g": 10
+        },
+        "persona_2": {
+          "pasta_g": 110,
+          "ternera_magra_g": 180,
+          "pesto_g": 20,
+          "tomate_cherry_g": 200,
+          "calabacin_g": 150,
+          "parmesano_g": 15
+        }
+      },
+      "merienda": {
+        "plato": "Batido rapido",
+        "persona_1": {
+          "leche_ml": 200,
+          "platano_g": 100,
+          "avena_g": 20,
+          "proteina_en_polvo": "opcional 20 g"
+        },
+        "persona_2": {
+          "leche_ml": 300,
+          "platano_g": 150,
+          "avena_g": 40,
+          "proteina_en_polvo": "opcional 25 g"
+        }
+      },
+      "cena": {
+        "plato": "Hamburguesa casera + patatas",
+        "persona_1": {
+          "hamburguesa_ternera_magra_g": 150,
+          "pan_hamburguesa_g": 60,
+          "patata_g": 200,
+          "ensalada_g": 150,
+          "queso_g": 15,
+          "salsa_yogur_g": 30
+        },
+        "persona_2": {
+          "hamburguesa_ternera_magra_g": 200,
+          "pan_hamburguesa_g": 100,
+          "patata_g": 350,
+          "ensalada_g": 200,
+          "queso_g": 25,
+          "salsa_yogur_g": 40
+        }
+      }
+    },
+    "viernes": {
+      "tipo": "descanso",
+      "desayuno": {
+        "plato": "Avena + yogur + fruta",
+        "persona_1": {
+          "avena_g": 40,
+          "yogur_g": 200,
+          "platano_g": 80,
+          "crema_cacahuete_g": 10
+        },
+        "persona_2": {
+          "avena_g": 70,
+          "yogur_g": 250,
+          "platano_g": 120,
+          "crema_cacahuete_g": 20
+        }
+      },
+      "comida": {
+        "plato": "Lentejas con verduras y huevo",
+        "persona_1": {
+          "lentejas_secas_g": 60,
+          "huevos": 2,
+          "verduras_g": 250,
+          "patata_g": 100,
+          "aceite_oliva_g": 5
+        },
+        "persona_2": {
+          "lentejas_secas_g": 90,
+          "huevos": 3,
+          "verduras_g": 300,
+          "patata_g": 150,
+          "aceite_oliva_g": 10
+        }
+      },
+      "merienda": {
+        "plato": "Pan con pavo y queso",
+        "persona_1": {
+          "pan_integral_g": 50,
+          "pavo_g": 80,
+          "queso_g": 20,
+          "fruta_g": 150
+        },
+        "persona_2": {
+          "pan_integral_g": 90,
+          "pavo_g": 120,
+          "queso_g": 30,
+          "fruta_g": 200
+        }
+      },
+      "cena": {
+        "plato": "Merluza con arroz",
+        "persona_1": {
+          "merluza_g": 170,
+          "arroz_g": 50,
+          "verduras_g": 250,
+          "aceite_oliva_g": 5
+        },
+        "persona_2": {
+          "merluza_g": 230,
+          "arroz_g": 80,
+          "verduras_g": 300,
+          "aceite_oliva_g": 10
+        }
+      }
+    },
+    "sabado": {
+      "tipo": "fuera_de_casa",
+      "desayuno": {
+        "plato": "Tostada + huevos + fruta",
+        "persona_1": {
+          "pan_g": 60,
+          "huevos": 2,
+          "fruta_g": 150
+        },
+        "persona_2": {
+          "pan_g": 100,
+          "huevos": 3,
+          "fruta_g": 200
+        }
+      },
+      "comida": {
+        "plato": "Comida fuera: proteina + carbohidrato + verduras",
+        "persona_1": "Racion normal; ejemplos: pollo + patatas/arroz + ensalada, pasta con carne, arroz con pollo o poke",
+        "persona_2": "Misma eleccion, con una racion extra de carbohidrato o acompanamiento"
+      },
+      "merienda": {
+        "plato": "Opcion facil fuera de casa",
+        "persona_1": "Yogur + platano, bocadillo de pavo, fruta + yogur o sandwich de pollo/pavo",
+        "persona_2": "Misma opcion, aumentando pan/cantidad y/o anadiendo frutos secos"
+      },
+      "cena": {
+        "plato": "Cena fuera",
+        "persona_1": "Elegir una fuente potente de proteina y disfrutar de la comida (pizza, pasta, hamburguesa, sushi, etc.)",
+        "persona_2": "Misma eleccion, asegurando suficiente proteina y carbohidratos"
+      }
+    },
+    "domingo": {
+      "tipo": "fuera_de_casa",
+      "desayuno": {
+        "plato": "Yogur + avena + fruta",
+        "persona_1": {
+          "yogur_g": 200,
+          "avena_g": 35,
+          "fruta_g": 150,
+          "frutos_secos_g": 10
+        },
+        "persona_2": {
+          "yogur_g": 250,
+          "avena_g": 60,
+          "fruta_g": 200,
+          "frutos_secos_g": 20
+        }
+      },
+      "comida": {
+        "plato": "Comida fuera: arroz/pasta + pescado o carne + verduras",
+        "persona_1": "Racion normal",
+        "persona_2": "Racion mayor, especialmente de carbohidratos"
+      },
+      "merienda": {
+        "plato": "Fruta + yogur o sandwich",
+        "persona_1": "Fruta + yogur, o sandwich pequeno de pavo/queso",
+        "persona_2": "Misma opcion, aumentando pan y/o anadiendo frutos secos"
+      },
+      "cena": {
+        "plato": "Tortilla de patata + ensalada (si se cena en casa)",
+        "persona_1": {
+          "huevos": 2,
+          "patata_g": 200,
+          "pan_g": 30,
+          "ensalada_g": 200,
+          "aceite_oliva_g": 5
+        },
+        "persona_2": {
+          "huevos": 4,
+          "patata_g": 350,
+          "pan_g": 80,
+          "ensalada_g": 250,
+          "aceite_oliva_g": 10
+        }
+      }
+    }
+  }
+}
