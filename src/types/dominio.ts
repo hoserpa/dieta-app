@@ -10,8 +10,8 @@ export type TipoComida =
 
 export interface Alimento {
   nombre: string
-  cantidad?: string
-  unidad?: string
+  cantidadP1?: string
+  cantidadP2?: string
 }
 
 export interface Comida {
@@ -75,9 +75,8 @@ export interface FilaAlimentoComida {
   meal_id: string
   item_order: number
   name: string
-  quantity: string | null
-  unit: string | null
-  notes: string | null
+  quantity_p1: string | null
+  quantity_p2: string | null
 }
 
 export interface FilaProductoCompra {

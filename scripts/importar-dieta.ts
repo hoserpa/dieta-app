@@ -54,14 +54,19 @@ function generarSql(datos: PlanDieta): string {
   let contadorAlimentos = 0
 
   lineas.push('-- Datos de dieta importados desde plan_semanal_comidas.json')
-  lineas.push('-- Ejecutar después de 001_esquema_inicial.sql')
+  lineas.push('-- Ejecutar después de 004_alterar_meal_items.sql')
   lineas.push('')
 
-  // ── 1. Insertar dieta ────────────────────────────────────────
+  lineas.push('-- Limpiar datos existentes (respetando foreign keys)')
+  lineas.push('DELETE FROM public.meal_items;')
+  lineas.push('DELETE FROM public.meals;')
+  lineas.push('DELETE FROM public.diet_days;')
+  lineas.push('DELETE FROM public.diets;')
+  lineas.push('')
+
   lineas.push(`insert into public.diets (id, name) values ('${DIETA_ID}', 'Plan semanal');`)
   lineas.push('')
 
-  // ── 2. Insertar días ─────────────────────────────────────────
   const dias = Object.keys(datos.plan)
   lineas.push('insert into public.diet_days (id, diet_id, day_order, label) values')
   const diasValues = dias.map((dia, i) => {
@@ -73,7 +78,6 @@ function generarSql(datos: PlanDieta): string {
   lineas.push(';')
   lineas.push('')
 
-  // ── 3. Insertar comidas ─────────────────────────────────────
   lineas.push('-- Comidas')
   lineas.push('insert into public.meals (id, diet_day_id, meal_order, meal_type, name, notes) values')
 
@@ -101,9 +105,8 @@ function generarSql(datos: PlanDieta): string {
   lineas.push(';')
   lineas.push('')
 
-  // ── 4. Insertar alimentos ────────────────────────────────────
   lineas.push('-- Alimentos')
-  lineas.push('insert into public.meal_items (meal_id, item_order, name, quantity, unit) values')
+  lineas.push('insert into public.meal_items (meal_id, item_order, name, quantity_p1, quantity_p2) values')
 
   const itemsValues: string[] = []
   contadorComidas = 0
@@ -118,26 +121,32 @@ function generarSql(datos: PlanDieta): string {
       contadorComidas++
       const comidaId = uuid(PREFIJO_COMIDA, contadorComidas)
 
-      const persona2 = comidaDatos.persona_2
+      const p1 = comidaDatos.persona_1
+      const p2 = comidaDatos.persona_2
 
-      if (typeof persona2 === 'string') {
-        itemsValues.push(
-          `  ('${comidaId}', 1, '${escapeSql(comidaDatos.plato)}', null, null)`,
-        )
+      if (typeof p1 === 'string' && typeof p2 === 'string') {
         contadorAlimentos++
+        itemsValues.push(
+          `  ('${comidaId}', 1, '${escapeSql(comidaDatos.plato)}', '${escapeSql(p1)}', '${escapeSql(p2)}')`,
+        )
         continue
       }
 
-      if (!esIngredientes(persona2)) continue
+      if (!esIngredientes(p1) || !esIngredientes(p2)) continue
+
+      const todasLasKeys = [...new Set([...Object.keys(p1), ...Object.keys(p2)])]
 
       let orden = 0
-      for (const [clave, valor] of Object.entries(persona2)) {
+      for (const clave of todasLasKeys) {
         orden++
         contadorAlimentos++
         const { nombre, unidad } = parsearNombre(clave)
-        const cantidad = String(valor)
+        const rawP1 = p1[clave] !== undefined ? String(p1[clave]) : null
+        const rawP2 = p2[clave] !== undefined ? String(p2[clave]) : null
+        const cantP1 = rawP1 && unidad ? `${rawP1} ${unidad}` : rawP1
+        const cantP2 = rawP2 && unidad ? `${rawP2} ${unidad}` : rawP2
         itemsValues.push(
-          `  ('${comidaId}', ${orden}, '${escapeSql(nombre)}', '${escapeSql(cantidad)}', ${unidad ? `'${unidad}'` : 'null'})`,
+          `  ('${comidaId}', ${orden}, '${escapeSql(nombre)}', ${cantP1 ? `'${escapeSql(cantP1)}'` : 'null'}, ${cantP2 ? `'${escapeSql(cantP2)}'` : 'null'})`,
         )
       }
     }
@@ -147,13 +156,10 @@ function generarSql(datos: PlanDieta): string {
   lineas.push(';')
   lineas.push('')
 
-  // ── 5. Resumen ───────────────────────────────────────────────
   lineas.push(`-- Resumen: ${dias.length} días, ${contadorComidas} comidas, ${contadorAlimentos} alimentos`)
 
   return lineas.join('\n')
 }
-
-// ── Main ────────────────────────────────────────────────────────
 
 const rutaJson = resolve(RAIZ, 'plan_semanal_comidas.json')
 const raw = readFileSync(rutaJson, 'utf-8')
