@@ -4,15 +4,16 @@ import { EstadoCargando } from '@/components/EstadoCargando'
 import { EstadoError } from '@/components/EstadoError'
 
 export function PantallaCompra() {
-  const { estado, alternarChecked, reintentar } = useCompra()
+  const { productos, isLoading, isError, mensajeError, alternarChecked, reintentar } =
+    useCompra()
 
-  if (estado.estado === 'cargando') return <EstadoCargando />
+  if (isLoading) return <EstadoCargando />
 
-  if (estado.estado === 'error') {
-    return <EstadoError mensaje={estado.mensaje} onReintentar={reintentar} />
+  if (isError) {
+    return <EstadoError mensaje={mensajeError} onReintentar={() => { void reintentar() }} />
   }
 
-  if (!estado.productos.length) {
+  if (!productos.length) {
     return (
       <p className="py-12 text-center font-mono text-xs uppercase tracking-widest text-[var(--color-neutral-500)]">
         No hay productos en la lista.
@@ -23,7 +24,7 @@ export function PantallaCompra() {
   return (
     <div>
       <h2 className="mb-4 font-serif text-2xl text-[var(--color-ink)]">Compra</h2>
-      <CompraLista productos={estado.productos} onToggle={alternarChecked} />
+      <CompraLista productos={productos} onToggle={alternarChecked} />
     </div>
   )
 }

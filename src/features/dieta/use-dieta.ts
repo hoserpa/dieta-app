@@ -1,31 +1,24 @@
-import { useCallback, useEffect, useState } from 'react'
-import type { DiaDieta } from '@/types/dominio'
+import { useQuery } from '@tanstack/react-query'
 import { obtenerDiasDieta } from '@/data/repositorios/repositorio-dieta'
 
-type EstadoDieta =
-  | { estado: 'cargando' }
-  | { estado: 'error'; mensaje: string }
-  | { estado: 'exito'; dias: DiaDieta[] }
+const CLAVE_DIETA = ['dieta', 'dias'] as const
+
+// La dieta es inmutable desde la app → cache indefinido
+const STALE_TIME_DIETA = Infinity
 
 export function useDieta() {
-  const [estado, setEstado] = useState<EstadoDieta>({ estado: 'cargando' })
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: CLAVE_DIETA,
+    queryFn: obtenerDiasDieta,
+    staleTime: STALE_TIME_DIETA,
+  })
 
-  const cargar = useCallback(() => {
-    setEstado({ estado: 'cargando' })
-    obtenerDiasDieta()
-      .then((dias) => setEstado({ estado: 'exito', dias }))
-      .catch(() => {
-        setEstado({
-          estado: 'error',
-          mensaje:
-            'No se han podido cargar los datos. Comprueba tu conexión e inténtalo de nuevo.',
-        })
-      })
-  }, [])
+  const dias = data ?? []
 
-  useEffect(() => {
-    cargar()
-  }, [cargar])
+  const mensajeError =
+    error instanceof Error
+      ? error.message
+      : 'No se han podido cargar los datos. Comprueba tu conexión e inténtalo de nuevo.'
 
-  return { estado, reintentar: cargar }
+  return { dias, isLoading, isError, mensajeError, reintentar: refetch }
 }

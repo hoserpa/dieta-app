@@ -1,55 +1,72 @@
-import { useCallback, useEffect, useState } from 'react'
-import type { ProductoCompra } from '@/types/dominio'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { obtenerProductosCompra, toggleChecked } from '@/data/repositorios/repositorio-compra'
+import type { ProductoCompra } from '@/types/dominio'
 
-type EstadoCompra =
-  | { estado: 'cargando' }
-  | { estado: 'error'; mensaje: string }
-  | { estado: 'exito'; productos: ProductoCompra[] }
+const CLAVE_COMPRA = ['compra', 'productos'] as const
+
+// La compra se consulta con frecuencia pero puede cambiar
+const STALE_TIME_COMPRA = 5 * 60 * 1000 // 5 minutos
 
 export function useCompra() {
-  const [estado, setEstado] = useState<EstadoCompra>({ estado: 'cargando' })
+  const queryClient = useQueryClient()
 
-  const cargar = useCallback(() => {
-    setEstado({ estado: 'cargando' })
-    obtenerProductosCompra()
-      .then((productos) => setEstado({ estado: 'exito', productos }))
-      .catch(() => {
-        setEstado({
-          estado: 'error',
-          mensaje:
-            'No se han podido cargar los datos. Comprueba tu conexión e inténtalo de nuevo.',
-        })
-      })
-  }, [])
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    queryKey: CLAVE_COMPRA,
+    queryFn: obtenerProductosCompra,
+    staleTime: STALE_TIME_COMPRA,
+  })
 
-  useEffect(() => {
-    cargar()
-  }, [cargar])
+  const productos = data ?? []
 
-  const alternarChecked = useCallback(
-    async (id: string) => {
-      if (estado.estado !== 'exito') return
+  const mensajeError =
+    error instanceof Error
+      ? error.message
+      : 'No se han podido cargar los datos. Comprueba tu conexión e inténtalo de nuevo.'
 
-      const anterior = estado.productos
-      const producto = anterior.find((p) => p.id === id)
-      if (!producto) return
+  const mutation = useMutation({
+    mutationFn: ({ id, checked }: { id: string; checked: boolean }) =>
+      toggleChecked(id, checked),
 
-      setEstado({
-        estado: 'exito',
-        productos: anterior.map((p) =>
-          p.id === id ? { ...p, checked: !p.checked } : p,
-        ),
-      })
+    onMutate: async ({ id, checked }) => {
+      // Cancelar queries en curso para evitar sobreescribir el optimista
+      await queryClient.cancelQueries({ queryKey: CLAVE_COMPRA })
 
-      try {
-        await toggleChecked(id, !producto.checked)
-      } catch {
-        setEstado({ estado: 'exito', productos: anterior })
+      // Snapshot del estado anterior para rollback
+      const anterior = queryClient.getQueryData<ProductoCompra[]>(CLAVE_COMPRA)
+
+      // Actualización optimista
+      queryClient.setQueryData<ProductoCompra[]>(CLAVE_COMPRA, (viejo) =>
+        (viejo ?? []).map((p) => (p.id === id ? { ...p, checked } : p)),
+      )
+
+      return { anterior }
+    },
+
+    onError: (_err, _vars, contexto) => {
+      // Rollback al estado anterior
+      if (contexto?.anterior) {
+        queryClient.setQueryData(CLAVE_COMPRA, contexto.anterior)
       }
     },
-    [estado],
-  )
 
-  return { estado, alternarChecked, reintentar: cargar }
+    onSettled: () => {
+      // Invalidar para sincronizar con el servidor
+      void queryClient.invalidateQueries({ queryKey: CLAVE_COMPRA })
+    },
+  })
+
+  const alternarChecked = (id: string) => {
+    const producto = productos.find((p) => p.id === id)
+    if (!producto) return
+    mutation.mutate({ id, checked: !producto.checked })
+  }
+
+  return {
+    productos,
+    isLoading,
+    isError,
+    mensajeError,
+    alternarChecked,
+    reintentar: refetch,
+  }
 }

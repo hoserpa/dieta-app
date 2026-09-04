@@ -12,16 +12,14 @@ function indiceDiaActual(): number {
 }
 
 export function PantallaDieta() {
-  const { estado, reintentar } = useDieta()
+  const { dias, isLoading, isError, mensajeError, reintentar } = useDieta()
   const [indiceSeleccionado, setIndiceSeleccionado] = useState(indiceDiaActual)
 
-  if (estado.estado === 'cargando') return <EstadoCargando />
+  if (isLoading) return <EstadoCargando />
 
-  if (estado.estado === 'error') {
-    return <EstadoError mensaje={estado.mensaje} onReintentar={reintentar} />
+  if (isError) {
+    return <EstadoError mensaje={mensajeError} onReintentar={() => { void reintentar() }} />
   }
-
-  const { dias } = estado
 
   if (!dias.length) {
     return (
