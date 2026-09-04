@@ -1,11 +1,16 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
 import App from '../../src/App'
 
 describe('App', () => {
-  it('renders the title', () => {
+  it('renderiza sin errores', () => {
+    const { container } = render(<App />)
+    expect(container).toBeDefined()
+  })
+
+  it('muestra estado de carga inicialmente', () => {
     render(<App />)
-    expect(screen.getByText('Dieta & Compra')).toBeInTheDocument()
+    expect(screen.getByRole('status')).toBeInTheDocument()
   })
 })

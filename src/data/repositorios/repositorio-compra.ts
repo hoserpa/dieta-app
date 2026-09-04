@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import type { ProductoCompra, FilaProductoCompra } from '@/types/dominio'
 
-function mapearProducto(fila: FilaProductoCompra): ProductoCompra {
+export function mapearProducto(fila: FilaProductoCompra): ProductoCompra {
   return {
     id: fila.id,
     nombre: fila.name,

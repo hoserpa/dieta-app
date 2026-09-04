@@ -22,10 +22,11 @@ export function PantallaLogin() {
           Dieta &amp; Compra
         </h1>
 
-        <label className="mb-1 block font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]">
+        <label htmlFor="email" className="mb-1 block font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]">
           Email
         </label>
         <input
+          id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -34,10 +35,11 @@ export function PantallaLogin() {
           className="focus-ring mb-4 w-full border-b-2 border-[var(--color-ink)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-ink)]"
         />
 
-        <label className="mb-1 block font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]">
+        <label htmlFor="contrasena" className="mb-1 block font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]">
           Contraseña
         </label>
         <input
+          id="contrasena"
           type="password"
           value={contrasena}
           onChange={(e) => setContrasena(e.target.value)}

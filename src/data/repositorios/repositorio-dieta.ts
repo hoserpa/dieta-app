@@ -8,7 +8,7 @@ import type {
   FilaAlimentoComida,
 } from '@/types/dominio'
 
-function mapearAlimento(fila: FilaAlimentoComida): Alimento {
+export function mapearAlimento(fila: FilaAlimentoComida): Alimento {
   return {
     nombre: fila.name,
     cantidadP1: fila.quantity_p1 ?? undefined,
@@ -16,7 +16,7 @@ function mapearAlimento(fila: FilaAlimentoComida): Alimento {
   }
 }
 
-function mapearComida(fila: FilaComida, alimentos: Alimento[]): Comida {
+export function mapearComida(fila: FilaComida, alimentos: Alimento[]): Comida {
   return {
     id: fila.id,
     tipo: fila.meal_type,
@@ -26,7 +26,7 @@ function mapearComida(fila: FilaComida, alimentos: Alimento[]): Comida {
   }
 }
 
-function mapearDia(
+export function mapearDia(
   fila: FilaDiaDieta,
   comidas: Comida[],
 ): DiaDieta {
