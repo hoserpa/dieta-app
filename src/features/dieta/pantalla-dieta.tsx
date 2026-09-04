@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useDieta } from './use-dieta'
 import { SelectorDia } from './SelectorDia'
 import { ComidaCard } from './ComidaCard'
+import { EstadoCargando } from '@/components/EstadoCargando'
+import { EstadoError } from '@/components/EstadoError'
 
 const ABREVIATURAS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'] as const
 
@@ -10,25 +12,13 @@ function indiceDiaActual(): number {
 }
 
 export function PantallaDieta() {
-  const estado = useDieta()
+  const { estado, reintentar } = useDieta()
   const [indiceSeleccionado, setIndiceSeleccionado] = useState(indiceDiaActual)
 
-  if (estado.estado === 'cargando') {
-    return (
-      <p className="py-12 text-center font-mono text-xs uppercase tracking-widest text-[var(--color-neutral-500)]">
-        Cargando…
-      </p>
-    )
-  }
+  if (estado.estado === 'cargando') return <EstadoCargando />
 
   if (estado.estado === 'error') {
-    return (
-      <div className="py-12 text-center">
-        <p className="font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
-          {estado.mensaje}
-        </p>
-      </div>
-    )
+    return <EstadoError mensaje={estado.mensaje} onReintentar={reintentar} />
   }
 
   const { dias } = estado

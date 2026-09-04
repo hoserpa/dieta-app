@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { DiaDieta } from '@/types/dominio'
 import { obtenerDiasDieta } from '@/data/repositorios/repositorio-dieta'
 
@@ -10,27 +10,22 @@ type EstadoDieta =
 export function useDieta() {
   const [estado, setEstado] = useState<EstadoDieta>({ estado: 'cargando' })
 
-  useEffect(() => {
-    let cancelado = false
-
+  const cargar = useCallback(() => {
+    setEstado({ estado: 'cargando' })
     obtenerDiasDieta()
-      .then((dias) => {
-        if (!cancelado) setEstado({ estado: 'exito', dias })
-      })
+      .then((dias) => setEstado({ estado: 'exito', dias }))
       .catch(() => {
-        if (!cancelado) {
-          setEstado({
-            estado: 'error',
-            mensaje:
-              'No se han podido cargar los datos. Comprueba tu conexión e inténtalo de nuevo.',
-          })
-        }
+        setEstado({
+          estado: 'error',
+          mensaje:
+            'No se han podido cargar los datos. Comprueba tu conexión e inténtalo de nuevo.',
+        })
       })
-
-    return () => {
-      cancelado = true
-    }
   }, [])
 
-  return estado
+  useEffect(() => {
+    cargar()
+  }, [cargar])
+
+  return { estado, reintentar: cargar }
 }

@@ -13,7 +13,7 @@ export function PantallaLogin() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--color-paper)] px-4">
+    <div className="flex min-h-dvh items-center justify-center bg-[var(--color-paper)] px-4">
       <form
         onSubmit={manejarEnvio}
         className="w-full max-w-sm border border-[var(--color-ink)] bg-[var(--color-paper)] p-8"
@@ -31,7 +31,7 @@ export function PantallaLogin() {
           onChange={(e) => setEmail(e.target.value)}
           required
           autoComplete="email"
-          className="mb-4 w-full border-b-2 border-[var(--color-ink)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-ink)] focus-visible:outline-none"
+          className="focus-ring mb-4 w-full border-b-2 border-[var(--color-ink)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-ink)]"
         />
 
         <label className="mb-1 block font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]">
@@ -43,17 +43,17 @@ export function PantallaLogin() {
           onChange={(e) => setContrasena(e.target.value)}
           required
           autoComplete="current-password"
-          className="mb-6 w-full border-b-2 border-[var(--color-ink)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-ink)] focus-visible:outline-none"
+          className="focus-ring mb-6 w-full border-b-2 border-[var(--color-ink)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-ink)]"
         />
 
         {error && (
-          <p className="mb-4 text-sm text-[var(--color-accent)]">{error}</p>
+          <p role="alert" className="mb-4 text-sm text-[var(--color-accent)]">{error}</p>
         )}
 
         <button
           type="submit"
           disabled={cargando}
-          className="w-full border border-[var(--color-ink)] bg-[var(--color-ink)] px-4 py-3 font-mono text-xs uppercase tracking-widest text-[var(--color-paper)] transition-colors hover:bg-transparent hover:text-[var(--color-ink)] disabled:opacity-50"
+          className="focus-ring min-h-[44px] w-full border border-[var(--color-ink)] bg-[var(--color-ink)] px-4 py-3 font-mono text-xs uppercase tracking-widest text-[var(--color-paper)] transition-colors hover:bg-transparent hover:text-[var(--color-ink)] disabled:opacity-50"
         >
           {cargando ? 'Entrando…' : 'Entrar'}
         </button>

@@ -13,13 +13,13 @@ export function ShellApp() {
   const location = useLocation()
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--color-paper)]">
+    <div className="flex min-h-dvh flex-col bg-[var(--color-paper)]">
       <header className="flex items-center justify-between border-b border-[var(--color-ink)] px-4 py-3">
         <h1 className="font-serif text-xl text-[var(--color-ink)]">Dieta &amp; Compra</h1>
         <button
           onClick={logout}
           aria-label="Cerrar sesión"
-          className="flex h-10 w-10 items-center justify-center border border-[var(--color-ink)] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)]"
+          className="focus-ring flex h-11 w-11 items-center justify-center border border-[var(--color-ink)] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)]"
         >
           <LogOut size={18} strokeWidth={1.5} />
         </button>
@@ -40,7 +40,8 @@ export function ShellApp() {
             <Link
               key={to}
               to={to}
-              className={`flex flex-1 flex-col items-center gap-1 py-3 text-xs font-mono uppercase tracking-widest transition-colors ${
+              aria-current={activo ? 'page' : undefined}
+              className={`focus-ring flex flex-1 flex-col items-center gap-1 py-3 text-xs font-mono uppercase tracking-widest transition-colors ${
                 activo
                   ? 'bg-[var(--color-ink)] text-[var(--color-paper)]'
                   : 'text-[var(--color-ink)] hover:bg-[var(--color-muted)]'

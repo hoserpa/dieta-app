@@ -17,6 +17,8 @@
   --font-body: 'Lora', Georgia, serif;
   --font-sans: 'Inter', 'Helvetica Neue', sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --animate-spin: spin 1s linear infinite;
 }
 
 body {
@@ -26,4 +28,13 @@ body {
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ink)] focus-visible:ring-offset-2;
 }
