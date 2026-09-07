@@ -31,3 +31,6 @@ dist-ssr
 
 # test
 test-results
+
+# Auditoría Lighthouse
+reports/lighthouse

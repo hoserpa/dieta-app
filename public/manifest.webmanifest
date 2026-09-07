@@ -1,0 +1,32 @@
+{
+  "name": "Dieta & Compra",
+  "short_name": "Dieta & Compra",
+  "description": "Plan semanal de comidas y lista de la compra compartida.",
+  "id": "/dieta-app/",
+  "start_url": "/dieta-app/",
+  "scope": "/dieta-app/",
+  "display": "standalone",
+  "background_color": "#F9F9F7",
+  "theme_color": "#F9F9F7",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/dieta-app/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/dieta-app/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/dieta-app/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

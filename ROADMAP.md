@@ -65,14 +65,15 @@ Hoja de ruta basada en `SPECS.md`, organizada en fases secuenciales hasta el MVP
 - Tests de componentes: Login, DaySelector, MealCard, ShoppingItem, BottomNav
 - Tests E2E (Playwright): flujo login → dieta → compra → marcar producto → recarga
 - Tests E2E: sincronización entre Usuario A y Usuario B
-- Auditoría Lighthouse
+- Auditoría Lighthouse (`npm run auditar:lighthouse`)
 - Revisión de seguridad (sin secretos en el bundle, RLS correctamente restrictivo)
 
 ## Fase 10 — Producción
 - Configurar variables de entorno (solo clave pública/publishable de Supabase)
-- Configurar dominio propio si procede
+- Configurar dominio propio si procede (se mantiene `https://hoserpa.github.io/dieta-app/`)
 - Desplegar en GitHub Pages
 - Comprobar HTTPS
+- Añadir PWA ligera: `manifest.webmanifest`, iconos (192/512/maskable/apple), meta tags (`npm run generar:iconos`)
 - Smoke test final con ambas cuentas de usuario
 
 ---

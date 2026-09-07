@@ -21,7 +21,7 @@ test('carga la página de login', async ({ page }) => {
 
   try {
     await expect(page.getByRole('heading', { name: 'Dieta & Compra' })).toBeVisible({ timeout: 10_000 })
-  } catch (e) {
+  } catch {
     const body = await page.evaluate(() => document.body.innerText.slice(0, 500))
     throw new Error(
       `Login no visible. body="${body}" | errores=${errores.join(' || ')} | URL=${page.url()}`,
