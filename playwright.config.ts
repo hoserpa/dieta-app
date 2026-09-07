@@ -3,7 +3,7 @@ import { config } from 'dotenv'
 
 config()
 
-const BASE_URL = 'http://localhost:4173/dieta-app'
+const BASE_URL = 'http://127.0.0.1:4173/dieta-app'
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -18,7 +18,7 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
   webServer: {
-    command: 'npm run preview',
+    command: 'npm run preview -- --host 127.0.0.1',
     port: 4173,
     reuseExistingServer: true,
     timeout: 30_000,

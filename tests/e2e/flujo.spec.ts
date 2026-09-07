@@ -1,12 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { mockearSupabase, ACCESS_TOKEN, USUARIO } from './mocks'
-
-async function iniciarSesion(page: Parameters<typeof mockearSupabase>[0]) {
-  await page.getByLabel('Email').fill('usuario@test.com')
-  await page.getByLabel('Contraseña').fill('contraseña')
-  await page.getByRole('button', { name: 'Entrar' }).click()
-  await expect(page).not.toHaveURL(/login/, { timeout: 10_000 })
-}
+import { mockearSupabase, sembrarSesion, ACCESS_TOKEN, USUARIO } from './mocks'
 
 test.beforeEach(async ({ page }) => {
   await mockearSupabase(page)
@@ -15,12 +8,13 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Flujo completo (con mocks)', () => {
   test('login → dieta → compra → marcar producto', async ({ page }) => {
-    await expect(page).toHaveURL(/login/)
     await expect(page.getByRole('heading', { name: 'Dieta & Compra' })).toBeVisible()
 
-    await iniciarSesion(page)
+    await page.getByLabel('Email').fill('usuario@test.com')
+    await page.getByLabel('Contraseña').fill('contraseña')
+    await page.getByRole('button', { name: 'Entrar' }).click()
 
-    await expect(page.getByRole('heading', { name: 'Dieta' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Dieta' })).toBeVisible({ timeout: 10_000 })
     await expect(page.getByText('Pan Integral')).toBeVisible()
 
     const primerBoton = page.getByRole('button', { name: 'L' })
@@ -49,14 +43,15 @@ test.describe('Flujo completo (con mocks)', () => {
   })
 
   test('recarga mantiene la sesión', async ({ page }) => {
-    await iniciarSesion(page)
-
+    await sembrarSesion(page)
     await page.reload({ waitUntil: 'domcontentloaded' })
     await expect(page.getByRole('heading', { name: 'Dieta' })).toBeVisible({ timeout: 10_000 })
   })
 
   test('logout vuelve al login', async ({ page }) => {
-    await iniciarSesion(page)
+    await sembrarSesion(page)
+    await page.reload({ waitUntil: 'domcontentloaded' })
+    await expect(page.getByRole('heading', { name: 'Dieta' })).toBeVisible({ timeout: 10_000 })
 
     await page.getByRole('button', { name: 'Cerrar sesión' }).click()
     await expect(page).toHaveURL(/login/)

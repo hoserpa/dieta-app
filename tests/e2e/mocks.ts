@@ -29,6 +29,9 @@ const PRODUCTOS = [
   { id: 'd0000000-0000-0000-0000-000000000002', name: 'Arroz', quantity: '500 g', unit: null, category: 'Cereales', item_order: 1, checked: false, created_at: '', updated_at: '' },
 ]
 
+// Estado mutable compartido entre workers del mock para que el toggle sea persistente
+const productosEnMemoria = PRODUCTOS.map((p) => ({ ...p }))
+
 function responderPagina(route: { continue: (opts: unknown) => void; fulfill: (opts: unknown) => void }, body: unknown) {
   route.fulfill({
     status: 200,
@@ -60,6 +63,9 @@ function sesionMock() {
 }
 
 export async function mockearSupabase(page: Page, opciones?: { loginFallara?: boolean }) {
+  // Reiniciar estado mutable para que cada test arranque limpio
+  productosEnMemoria.splice(0, productosEnMemoria.length, ...PRODUCTOS.map((p) => ({ ...p })))
+
   await page.route('**/auth/v1/token**', (ruta) => {
     if (opciones?.loginFallara) {
       responderError(ruta, 'Invalid login credentials')
@@ -81,10 +87,50 @@ export async function mockearSupabase(page: Page, opciones?: { loginFallara?: bo
   await page.route('**/rest/v1/meal_items**', (ruta) => responderPagina(ruta, ALIMENTOS))
 
   await page.route('**/rest/v1/shopping_items**', (ruta) => {
-    if (ruta.request().method() === 'PATCH') {
-      responderPagina(ruta, [])
+    const metodo = ruta.request().method()
+    if (metodo === 'PATCH') {
+      const url = new URL(ruta.request().url())
+      const id = (url.searchParams.get('id') ?? '').replace(/^eq\./, '')
+      const body = ruta.request().postData()
+      let checked = false
+      if (body) {
+        try {
+          checked = JSON.parse(body).checked ?? false
+        } catch {
+          checked = false
+        }
+      }
+      const producto = productosEnMemoria.find((p) => p.id === id)
+      if (producto) producto.checked = checked
+      responderPagina(ruta, producto ?? [])
       return
     }
-    responderPagina(ruta, PRODUCTOS)
+    responderPagina(ruta, productosEnMemoria)
   })
+}
+
+function claveStorageAuth(): string {
+  const supabaseUrl = process.env.VITE_SUPABASE_URL ?? 'https://localhost.supabase.co'
+  const ref = new URL(supabaseUrl).hostname.split('.')[0]
+  return `sb-${ref}-auth-token`
+}
+
+export async function sembrarSesion(page: Page) {
+  const now = Math.floor(Date.now() / 1000)
+  await page.addInitScript(
+    ([clave, token, user, expiresAt]) => {
+      window.localStorage.setItem(
+        clave,
+        JSON.stringify({
+          access_token: token,
+          token_type: 'bearer',
+          expires_in: 3600,
+          expires_at: expiresAt,
+          refresh_token: 'refresh-token-mock',
+          user,
+        }),
+      )
+    },
+    [claveStorageAuth(), ACCESS_TOKEN, USUARIO, now + 3600],
+  )
 }
