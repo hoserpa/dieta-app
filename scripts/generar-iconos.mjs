@@ -4,36 +4,36 @@ import { chromium } from '@playwright/test'
 
 const rutaIconos = new URL('../public/icons/', import.meta.url)
 
+function diseno(escala) {
+  return `
+    <rect x="${16 * escala}" y="${44 * escala}" width="${160 * escala}" height="${104 * escala}" fill="#111111"/>
+    <text x="${96 * escala}" y="${120 * escala}" font-family="'Playfair Display', 'Times New Roman', serif" font-size="${88 * escala}" font-weight="700" fill="#F9F9F7" text-anchor="middle">D&amp;C</text>
+    <rect x="${40 * escala}" y="${134 * escala}" width="${112 * escala}" height="${8 * escala}" fill="#CC0000"/>
+  `
+}
+
 function svgIcono(tamano, maskable = false) {
   const escala = tamano / 192
-  const interiorFijo = `
-    <rect x="${4 * escala}" y="${4 * escala}" width="${184 * escala}" height="${184 * escala}" fill="#111111"/>
-    <rect x="0" y="0" width="${192 * escala}" height="${12 * escala}" fill="#111111"/>
-    <text x="${96 * escala}" y="${126 * escala}" font-family="'Playfair Display', 'Times New Roman', serif" font-size="${102 * escala}" font-weight="700" fill="#F9F9F7" text-anchor="middle">D&amp;C</text>
-    <rect x="${48 * escala}" y="${148 * escala}" width="${96 * escala}" height="${8 * escala}" fill="#CC0000"/>
-  `.trim()
+  const interior = diseno(escala)
 
-  let interior = interiorFijo
-  if (maskable) {
-    const factor = 0.82
-    const offset = (tamano * (1 - factor)) / 2
-    interior = `<g transform="translate(${offset},${offset}) scale(${factor})">${interiorFijo}</g>`
-  }
+  const contenido = maskable
+    ? `<g transform="translate(${(tamano * (1 - 0.82)) / 2},${(tamano * (1 - 0.82)) / 2}) scale(0.82)">${interior}</g>`
+    : interior
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${tamano}" height="${tamano}" viewBox="0 0 ${tamano} ${tamano}">
   <rect width="${tamano}" height="${tamano}" fill="#F9F9F7"/>
-  ${interior}
+  ${contenido}
 </svg>`
 }
 
 async function generarIcono(navegador, nombre, tamano, maskable = false) {
   const svg = svgIcono(tamano, maskable)
   const html = `<!doctype html><html><head><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/></head><body style="margin:0">${svg}</body></html>`
-  const navegador2 = await navegador.newPage({ viewport: { width: tamano, height: tamano } })
-  await navegador2.setContent(html)
-  await navegador2.evaluate(() => document.fonts?.ready)
-  await navegador2.locator('svg').screenshot({ path: fileURLToPath(new URL(`${nombre}.png`, rutaIconos)), omitBackground: false })
-  await navegador2.close()
+  const pagina = await navegador.newPage({ viewport: { width: tamano, height: tamano } })
+  await pagina.setContent(html)
+  await pagina.evaluate(() => document.fonts?.ready)
+  await pagina.locator('svg').screenshot({ path: fileURLToPath(new URL(`${nombre}.png`, rutaIconos)), omitBackground: false })
+  await pagina.close()
   console.log(`Generado ${nombre}.png`)
 }
 
