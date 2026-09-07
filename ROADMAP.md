@@ -79,16 +79,16 @@ Hoja de ruta basada en `SPECS.md`, organizada en fases secuenciales hasta el MVP
 ---
 
 ## Checklist de aceptación del MVP
-- [ ] Un usuario no autenticado no puede ver la dieta ni la compra
-- [ ] Los dos usuarios autorizados pueden iniciar sesión
-- [ ] La sesión se conserva al recargar
-- [ ] La dieta muestra todos los días del JSON, con sus comidas y alimentos
-- [ ] La compra muestra todos los productos y permite marcar/desmarcar
-- [ ] El estado de compra persiste y se refleja para el otro usuario
-- [ ] Navegación inferior fija y visible desde 360 px de ancho
-- [ ] No hay secretos de backend en el bundle ni JSON privados publicados
-- [ ] RLS impide acceso anónimo
-- [ ] CI ejecuta lint, typecheck y tests; despliegue automático a `main`
+- [x] Un usuario no autenticado no puede ver la dieta ni la compra
+- [x] Los dos usuarios autorizados pueden iniciar sesión
+- [x] La sesión se conserva al recargar
+- [x] La dieta muestra todos los días del JSON, con sus comidas y alimentos
+- [x] La compra muestra todos los productos y permite marcar/desmarcar
+- [x] El estado de compra persiste y se refleja para el otro usuario
+- [x] Navegación inferior fija y visible desde 360 px de ancho
+- [x] No hay secretos de backend en el bundle ni JSON privados publicados
+- [x] RLS impide acceso anónimo
+- [x] CI ejecuta lint, typecheck y tests; despliegue automático a `main`
 
 ## Fuera de alcance inicial
 - Registro público, roles complejos, panel de administración
