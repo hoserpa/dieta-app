@@ -6,9 +6,8 @@ const rutaIconos = new URL('../public/icons/', import.meta.url)
 
 function diseno(escala) {
   return `
-    <rect x="${16 * escala}" y="${44 * escala}" width="${160 * escala}" height="${104 * escala}" fill="#111111"/>
-    <text x="${96 * escala}" y="${120 * escala}" font-family="'Playfair Display', 'Times New Roman', serif" font-size="${88 * escala}" font-weight="700" fill="#F9F9F7" text-anchor="middle">D&amp;C</text>
-    <rect x="${40 * escala}" y="${134 * escala}" width="${112 * escala}" height="${8 * escala}" fill="#CC0000"/>
+    <text x="${96 * escala}" y="${108 * escala}" font-family="'Playfair Display', 'Times New Roman', serif" font-size="${60 * escala}" font-weight="700" fill="#F9F9F7" text-anchor="middle">D&amp;C</text>
+    <rect x="${40 * escala}" y="${120 * escala}" width="${112 * escala}" height="${8 * escala}" fill="#CC0000"/>
   `
 }
 
@@ -21,7 +20,7 @@ function svgIcono(tamano, maskable = false) {
     : interior
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${tamano}" height="${tamano}" viewBox="0 0 ${tamano} ${tamano}">
-  <rect width="${tamano}" height="${tamano}" fill="#F9F9F7"/>
+  <rect width="${tamano}" height="${tamano}" fill="#111111"/>
   ${contenido}
 </svg>`
 }
