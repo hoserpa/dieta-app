@@ -95,3 +95,21 @@ Hoja de ruta basada en `SPECS.md`, organizada en fases secuenciales hasta el MVP
 - Backend propio, pagos, notificaciones push
 - Sincronización offline completa
 - Edición de la dieta desde la app
+
+---
+
+## Nota de cierre — Versión 1
+
+**Fecha:** 7 de septiembre de 2026
+
+Primera versión finalizada y desplegada en producción:
+
+- **URL:** https://hoserpa.github.io/dieta-app/ (GitHub Pages, HTTPS)
+- **Commit final:** `1d67656` en `main`, CI/CD en verde.
+- **Alcance entregado:** Fases 1–10 del ROADMAP completadas y checklist de aceptación del MVP marcado.
+- **Incluye:** autenticación con las dos cuentas, dieta semanal, lista de la compra compartida, PWA ligera (instalable), estilos "newsprint" responsive móvil y auditoría Lighthouse.
+- **Calidad:** lint, typecheck, 38 tests unitarios y 10 tests E2E en verde en CI.
+
+**Pendiente conocido (no bloqueante):** smoke test manual final con ambas cuentas en producción.
+
+**Próximos pasos:** los cambios futuros se abordarán por encima de este hito; queda fuera de alcance la sincronización offline completa y la edición de la dieta desde la app, que podrían considerarse en versiones siguientes.
