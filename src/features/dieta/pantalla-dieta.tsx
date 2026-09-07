@@ -34,7 +34,7 @@ export function PantallaDieta() {
 
   return (
     <div>
-      <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
+      <div className="mb-6 grid grid-cols-7 gap-2">
         {dias.map((d, i) => (
           <SelectorDia
             key={d.id}

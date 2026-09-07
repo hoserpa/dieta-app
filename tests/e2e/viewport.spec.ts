@@ -28,3 +28,24 @@ test('la navegación inferior es fija y visible desde 360px de ancho', async ({ 
   await page.evaluate(() => window.scrollTo(0, 800))
   await expect(compra).toBeVisible()
 })
+
+test('el seleccionador de días cabe completo a 360px de ancho', async ({ page }) => {
+  await mockearSupabase(page)
+  await sembrarSesion(page)
+  await page.goto('/#/app/dieta', { waitUntil: 'domcontentloaded' })
+
+  const viewport = page.viewportSize()!
+  const selector = page.getByText('Lunes')
+  await expect(selector).toBeVisible({ timeout: 10_000 })
+
+  const botones = page.locator('#root button[aria-pressed]')
+  const total = await botones.count()
+  expect(total).toBeGreaterThan(1)
+
+  for (let i = 0; i < total; i++) {
+    const caja = await botones.nth(i).boundingBox()
+    expect(caja).not.toBeNull()
+    expect(caja!.x).toBeGreaterThanOrEqual(0)
+    expect(caja!.x + caja!.width).toBeLessThanOrEqual(viewport.width + 1)
+  }
+})
