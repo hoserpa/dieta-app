@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
+import { existsSync } from 'node:fs'
 
-process.loadEnvFile()
+if (existsSync('.env')) process.loadEnvFile()
 
 const BASE_URL = 'http://127.0.0.1:4173/dieta-app'
 

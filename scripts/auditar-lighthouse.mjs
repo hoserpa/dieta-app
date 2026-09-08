@@ -1,11 +1,12 @@
 import { chromium } from '@playwright/test'
 import { spawn, execFileSync } from 'node:child_process'
 import { readFileSync, mkdirSync, rmSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import net from 'node:net'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-process.loadEnvFile()
+if (existsSync('.env')) process.loadEnvFile()
 
 const RAÍZ = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const PUERTO_APP = 4173
