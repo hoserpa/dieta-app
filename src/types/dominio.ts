@@ -41,18 +41,6 @@ export interface ProductoCompra {
 
 // ── Tipos de filas de base de datos ──────────────────────────────
 
-export interface FilaPerfil {
-  id: string
-  display_name: string | null
-  created_at: string
-}
-
-export interface FilaDieta {
-  id: string
-  name: string
-  created_at: string
-}
-
 export interface FilaDiaDieta {
   id: string
   diet_id: string

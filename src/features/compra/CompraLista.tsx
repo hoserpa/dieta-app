@@ -1,22 +1,13 @@
 import { CompraItem } from './CompraItem'
-
-interface Producto {
-  id: string
-  nombre: string
-  cantidad?: string
-  unidad?: string
-  categoria?: string
-  orden: number
-  checked: boolean
-}
+import type { ProductoCompra } from '@/types/dominio'
 
 interface Props {
-  productos: Producto[]
+  productos: ProductoCompra[]
   onToggle: (id: string) => void
 }
 
 export function CompraLista({ productos, onToggle }: Props) {
-  const porCategoria = new Map<string, Producto[]>()
+  const porCategoria = new Map<string, ProductoCompra[]>()
   for (const producto of productos) {
     const cat = producto.categoria ?? 'Otros'
     const lista = porCategoria.get(cat) ?? []

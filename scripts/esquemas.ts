@@ -2,12 +2,10 @@ import { z } from 'zod'
 
 // ── Esquemas para plan_semanal_comidas.json ─────────────────────
 
-const ingredienteSchema = z.union([z.number(), z.string()])
-
 const comidasDelDiaSchema = z.object({
   plato: z.string(),
-  persona_1: z.union([z.record(ingredienteSchema), z.string()]),
-  persona_2: z.union([z.record(ingredienteSchema), z.string()]),
+  persona_1: z.union([z.record(z.union([z.number(), z.string()])), z.string()]),
+  persona_2: z.union([z.record(z.union([z.number(), z.string()])), z.string()]),
 })
 
 const diaPlanSchema = z.object({

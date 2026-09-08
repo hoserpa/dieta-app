@@ -1,12 +1,11 @@
 import { chromium } from '@playwright/test'
-import { config } from 'dotenv'
 import { spawn, execFileSync } from 'node:child_process'
 import { readFileSync, mkdirSync, rmSync } from 'node:fs'
 import net from 'node:net'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-config()
+process.loadEnvFile()
 
 const RAÍZ = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const PUERTO_APP = 4173

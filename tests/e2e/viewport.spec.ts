@@ -35,10 +35,10 @@ test('el seleccionador de días cabe completo a 360px de ancho', async ({ page }
   await page.goto('/#/app/dieta', { waitUntil: 'domcontentloaded' })
 
   const viewport = page.viewportSize()!
-  const selector = page.getByText('Lunes')
-  await expect(selector).toBeVisible({ timeout: 10_000 })
 
   const botones = page.locator('#root button[aria-pressed]')
+  await expect(botones.first()).toBeVisible({ timeout: 10_000 })
+
   const total = await botones.count()
   expect(total).toBeGreaterThan(1)
 

@@ -36,15 +36,7 @@ function generarSql(datos: ListaCompra): string {
 
   const valores: string[] = []
 
-  const categorias = [
-    'proteinas',
-    'cereales_y_carbohidratos',
-    'lacteos_y_alternativas',
-    'frutas',
-    'verduras',
-    'grasas_y_condimentos',
-    'otros',
-  ] as const
+  const categorias = Object.keys(MAPEO_CATEGORIAS)
 
   for (const cat of categorias) {
     const items = datos[cat]
@@ -80,4 +72,3 @@ const sql = generarSql(datos)
 writeFileSync(SALIDA, sql, 'utf-8')
 
 console.log(`Compra importada → ${SALIDA}`)
-console.log(sql)

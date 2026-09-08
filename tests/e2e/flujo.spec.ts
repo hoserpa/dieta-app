@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { mockearSupabase, sembrarSesion, ACCESS_TOKEN, USUARIO } from './mocks'
+import { mockearSupabase, sembrarSesion } from './mocks'
 
 test.beforeEach(async ({ page }) => {
   await mockearSupabase(page)
@@ -15,12 +15,12 @@ test.describe('Flujo completo (con mocks)', () => {
     await page.getByRole('button', { name: 'Entrar' }).click()
 
     await expect(page.getByRole('heading', { name: 'Dieta' })).toBeVisible({ timeout: 10_000 })
-    await expect(page.getByText('Pan Integral')).toBeVisible()
 
     const primerBoton = page.getByRole('button', { name: 'L' })
     await expect(primerBoton).toBeVisible()
     await primerBoton.click()
     await expect(primerBoton).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.getByText('Pan Integral')).toBeVisible()
 
     await page.getByRole('link', { name: 'Compra' }).click()
     await expect(page.getByRole('heading', { name: 'Compra' })).toBeVisible()
@@ -55,12 +55,5 @@ test.describe('Flujo completo (con mocks)', () => {
 
     await page.getByRole('button', { name: 'Cerrar sesión' }).click()
     await expect(page).toHaveURL(/login/)
-  })
-})
-
-test.describe('Datos ficticios usados', () => {
-  test('el mock expone token y usuario', () => {
-    expect(ACCESS_TOKEN).toBeTruthy()
-    expect(USUARIO.id).toMatch(/^[0-9a-f-]{36}$/)
   })
 })
