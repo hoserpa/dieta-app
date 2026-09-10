@@ -12,13 +12,13 @@ const PRODUCTOS: ProductoCompra[] = [
 
 describe('CompraLista', () => {
   it('agrupa productos por categoría', () => {
-    render(<CompraLista productos={PRODUCTOS} onToggle={() => {}} />)
+    render(<CompraLista productos={PRODUCTOS} onToggle={() => {}} onEliminar={() => {}} />)
     expect(screen.getByRole('heading', { name: 'Proteínas' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Cereales' })).toBeInTheDocument()
   })
 
   it('muestra todos los productos', () => {
-    render(<CompraLista productos={PRODUCTOS} onToggle={() => {}} />)
+    render(<CompraLista productos={PRODUCTOS} onToggle={() => {}} onEliminar={() => {}} />)
     expect(screen.getByText('Pollo')).toBeInTheDocument()
     expect(screen.getByText('Ternera')).toBeInTheDocument()
     expect(screen.getByText('Arroz')).toBeInTheDocument()
@@ -26,7 +26,7 @@ describe('CompraLista', () => {
 
   it('llama a onToggle con el id correcto', async () => {
     const onToggle = vi.fn()
-    render(<CompraLista productos={PRODUCTOS} onToggle={onToggle} />)
+    render(<CompraLista productos={PRODUCTOS} onToggle={onToggle} onEliminar={() => {}} />)
     const checkboxes = screen.getAllByRole('checkbox')
     await checkboxes[0].click()
     expect(onToggle).toHaveBeenCalledWith('p1')
@@ -36,7 +36,14 @@ describe('CompraLista', () => {
     const sinCategoria: ProductoCompra[] = [
       { id: 'p4', nombre: 'Café', orden: 1, checked: false },
     ]
-    render(<CompraLista productos={sinCategoria} onToggle={() => {}} />)
+    render(<CompraLista productos={sinCategoria} onToggle={() => {}} onEliminar={() => {}} />)
     expect(screen.getByRole('heading', { name: 'Otros' })).toBeInTheDocument()
+  })
+
+  it('llama a onEliminar con el id correcto', async () => {
+    const onEliminar = vi.fn()
+    render(<CompraLista productos={PRODUCTOS} onToggle={() => {}} onEliminar={onEliminar} />)
+    await screen.getByRole('button', { name: 'Eliminar Ternera' }).click()
+    expect(onEliminar).toHaveBeenCalledWith('p2')
   })
 })

@@ -1,11 +1,13 @@
+import { X } from 'lucide-react'
 import type { ProductoCompra } from '@/types/dominio'
 
 interface Props {
   producto: ProductoCompra
   onToggle: () => void
+  onEliminar: () => void
 }
 
-export function CompraItem({ producto, onToggle }: Props) {
+export function CompraItem({ producto, onToggle, onEliminar }: Props) {
   const partes = [producto.cantidad, producto.unidad].filter(Boolean).join(' ')
 
   return (
@@ -31,6 +33,14 @@ export function CompraItem({ producto, onToggle }: Props) {
           {partes}
         </span>
       )}
+      <button
+        type="button"
+        onClick={onEliminar}
+        aria-label={`Eliminar ${producto.nombre}`}
+        className="focus-ring -mr-2 flex h-8 w-8 shrink-0 items-center justify-center text-[var(--color-neutral-400)] transition-colors hover:text-[var(--color-accent)]"
+      >
+        <X className="h-4 w-4" />
+      </button>
     </li>
   )
 }

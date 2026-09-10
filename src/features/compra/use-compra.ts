@@ -1,11 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { obtenerProductosCompra, toggleChecked } from '@/data/repositorios/repositorio-compra'
+import type { QueryClient } from '@tanstack/react-query'
+import {
+  agregarProducto,
+  eliminarProducto,
+  obtenerProductosCompra,
+  toggleChecked,
+} from '@/data/repositorios/repositorio-compra'
 import type { ProductoCompra } from '@/types/dominio'
 
 const CLAVE_COMPRA = ['compra', 'productos'] as const
 
 // La compra se consulta con frecuencia pero puede cambiar
 const STALE_TIME_COMPRA = 5 * 60 * 1000 // 5 minutos
+
+async function cancelarYSnapshot(queryClient: QueryClient): Promise<ProductoCompra[] | undefined> {
+  await queryClient.cancelQueries({ queryKey: CLAVE_COMPRA })
+  return queryClient.getQueryData<ProductoCompra[]>(CLAVE_COMPRA)
+}
+
+function restaurarSnapshot(queryClient: QueryClient, anterior: ProductoCompra[] | undefined) {
+  if (anterior) queryClient.setQueryData(CLAVE_COMPRA, anterior)
+}
 
 export function useCompra() {
   const queryClient = useQueryClient()
@@ -28,13 +43,8 @@ export function useCompra() {
       toggleChecked(id, checked),
 
     onMutate: async ({ id, checked }) => {
-      // Cancelar queries en curso para evitar sobreescribir el optimista
-      await queryClient.cancelQueries({ queryKey: CLAVE_COMPRA })
+      const anterior = await cancelarYSnapshot(queryClient)
 
-      // Snapshot del estado anterior para rollback
-      const anterior = queryClient.getQueryData<ProductoCompra[]>(CLAVE_COMPRA)
-
-      // Actualización optimista
       queryClient.setQueryData<ProductoCompra[]>(CLAVE_COMPRA, (viejo) =>
         (viejo ?? []).map((p) => (p.id === id ? { ...p, checked } : p)),
       )
@@ -42,15 +52,64 @@ export function useCompra() {
       return { anterior }
     },
 
-    onError: (_err, _vars, contexto) => {
-      // Rollback al estado anterior
-      if (contexto?.anterior) {
-        queryClient.setQueryData(CLAVE_COMPRA, contexto.anterior)
-      }
-    },
+    onError: (_err, _vars, contexto) => restaurarSnapshot(queryClient, contexto?.anterior),
 
     onSettled: () => {
-      // Invalidar para sincronizar con el servidor
+      void queryClient.invalidateQueries({ queryKey: CLAVE_COMPRA })
+    },
+  })
+
+  const mutacionAgregar = useMutation({
+    mutationFn: (datos: { nombre: string; categoria?: string }) => agregarProducto(datos),
+
+    onMutate: async (datos) => {
+      const anterior = await cancelarYSnapshot(queryClient)
+
+      queryClient.setQueryData<ProductoCompra[]>(CLAVE_COMPRA, (viejo) => {
+        const actuales = viejo ?? []
+        const enCategoria = actuales.filter((p) => p.categoria === datos.categoria)
+        const orden = enCategoria.length
+          ? Math.max(...enCategoria.map((p) => p.orden)) + 1
+          : 1
+
+        return [
+          ...actuales,
+          {
+            id: `temporal-${Date.now()}`,
+            nombre: datos.nombre,
+            categoria: datos.categoria,
+            orden,
+            checked: false,
+          },
+        ]
+      })
+
+      return { anterior }
+    },
+
+    onError: (_err, _vars, contexto) => restaurarSnapshot(queryClient, contexto?.anterior),
+
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: CLAVE_COMPRA })
+    },
+  })
+
+  const mutacionEliminar = useMutation({
+    mutationFn: eliminarProducto,
+
+    onMutate: async (id: string) => {
+      const anterior = await cancelarYSnapshot(queryClient)
+
+      queryClient.setQueryData<ProductoCompra[]>(CLAVE_COMPRA, (viejo) =>
+        (viejo ?? []).filter((p) => p.id !== id),
+      )
+
+      return { anterior }
+    },
+
+    onError: (_err, _vars, contexto) => restaurarSnapshot(queryClient, contexto?.anterior),
+
+    onSettled: () => {
       void queryClient.invalidateQueries({ queryKey: CLAVE_COMPRA })
     },
   })
@@ -61,12 +120,22 @@ export function useCompra() {
     mutation.mutate({ id, checked: !producto.checked })
   }
 
+  const agregar = (datos: { nombre: string; categoria?: string }) => {
+    mutacionAgregar.mutate(datos)
+  }
+
+  const eliminar = (id: string) => {
+    mutacionEliminar.mutate(id)
+  }
+
   return {
     productos,
     isLoading,
     isError,
     mensajeError,
     alternarChecked,
+    agregar,
+    eliminar,
     reintentar: refetch,
   }
 }

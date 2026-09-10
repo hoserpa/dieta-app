@@ -88,8 +88,9 @@ export async function mockearSupabase(page: Page, opciones?: { loginFallara?: bo
 
   await page.route('**/rest/v1/shopping_items**', (ruta) => {
     const metodo = ruta.request().method()
+    const url = new URL(ruta.request().url())
+
     if (metodo === 'PATCH') {
-      const url = new URL(ruta.request().url())
       const id = (url.searchParams.get('id') ?? '').replace(/^eq\./, '')
       const body = ruta.request().postData()
       let checked = false
@@ -105,6 +106,60 @@ export async function mockearSupabase(page: Page, opciones?: { loginFallara?: bo
       responderPagina(ruta, producto ?? [])
       return
     }
+
+    if (metodo === 'POST') {
+      const body = ruta.request().postData()
+      let datos: Record<string, unknown> = {}
+      if (body) {
+        try {
+          datos = JSON.parse(body)
+        } catch {
+          datos = {}
+        }
+      }
+      const nuevo = {
+        id: `e0000000-0000-0000-0000-0000000000${String(productosEnMemoria.length + 1).padStart(2, '0')}`,
+        name: String(datos.name ?? ''),
+        quantity: (datos.quantity ?? null) as string | null,
+        unit: (datos.unit ?? null) as string | null,
+        category: (datos.category ?? null) as string | null,
+        item_order: Number(datos.item_order ?? 1),
+        checked: Boolean(datos.checked ?? false),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }
+      productosEnMemoria.push(nuevo)
+      responderPagina(ruta, nuevo)
+      return
+    }
+
+    if (metodo === 'DELETE') {
+      const id = (url.searchParams.get('id') ?? '').replace(/^eq\./, '')
+      const indice = productosEnMemoria.findIndex((p) => p.id === id)
+      if (indice !== -1) productosEnMemoria.splice(indice, 1)
+      responderPagina(ruta, {})
+      return
+    }
+
+    const parametroCategoria = url.searchParams.get('category')
+    const esConsultaOrden =
+      (url.searchParams.get('order') ?? '').includes('item_order.desc') &&
+      url.searchParams.get('limit') === '1'
+
+    if (esConsultaOrden) {
+      const categoria =
+        parametroCategoria && (parametroCategoria.startsWith('eq.') || parametroCategoria.startsWith('is.'))
+          ? (parametroCategoria.slice(3) === 'null' ? null : parametroCategoria.slice(3))
+          : undefined
+      const enCategoria =
+        categoria === undefined
+          ? productosEnMemoria
+          : productosEnMemoria.filter((p) => (p.category ?? null) === categoria)
+      const maximo = [...enCategoria].sort((a, b) => b.item_order - a.item_order)[0] ?? null
+      responderPagina(ruta, maximo ? [maximo] : [])
+      return
+    }
+
     responderPagina(ruta, productosEnMemoria)
   })
 }

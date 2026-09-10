@@ -4,9 +4,10 @@ import type { ProductoCompra } from '@/types/dominio'
 interface Props {
   productos: ProductoCompra[]
   onToggle: (id: string) => void
+  onEliminar: (id: string) => void
 }
 
-export function CompraLista({ productos, onToggle }: Props) {
+export function CompraLista({ productos, onToggle, onEliminar }: Props) {
   const porCategoria = new Map<string, ProductoCompra[]>()
   for (const producto of productos) {
     const cat = producto.categoria ?? 'Otros'
@@ -28,6 +29,7 @@ export function CompraLista({ productos, onToggle }: Props) {
                 key={producto.id}
                 producto={producto}
                 onToggle={() => onToggle(producto.id)}
+                onEliminar={() => onEliminar(producto.id)}
               />
             ))}
           </ul>
