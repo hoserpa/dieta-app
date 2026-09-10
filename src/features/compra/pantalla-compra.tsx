@@ -43,7 +43,7 @@ export function PantallaCompra() {
         type="button"
         onClick={() => setMostrandoFormulario((v) => !v)}
         aria-label="Añadir producto"
-        className="focus-ring fixed bottom-24 right-6 z-10 flex h-12 w-12 items-center justify-center border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+        className="focus-ring fixed bottom-30 right-6 z-10 flex h-12 w-12 items-center justify-center border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)] transition-colors hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
       >
         <Plus className="h-6 w-6" />
       </button>
